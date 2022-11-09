@@ -1,0 +1,7 @@
+name: 'add-pr-ref-to-changelog'
+description: 'Add PR reference to CHANGELOG.md'
+runs:
+  using: "composite"
+  steps:
+    - run: ${{ github.action_path }}/add_pr_ref_to_changelog.py
+      shell: bash
