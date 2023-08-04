@@ -50,7 +50,11 @@ def patch(contents: str, ref: str) -> str:
 
 if __name__ == "__main__":
     event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
-    ref = parse_github_event(event)
+    try:
+        ref = parse_github_event(event)
+    except Exception:
+        print(f"Failed to parse {event=}")
+        raise
 
     changelog = Path("CHANGELOG.md")
     changelog.write_text(
