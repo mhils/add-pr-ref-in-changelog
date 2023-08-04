@@ -17,10 +17,18 @@ def parse_github_event(event) -> str:
             commit_url = event["head_commit"]["url"]
             change_link = f"[{event['head_commit']['id'][:7]}]({commit_url})"
         else:
-            authors = ", ".join(dict.fromkeys("@" + c["author"]["username"] for c in event["commits"]))
+            authors = ", ".join(
+                dict.fromkeys(
+                    f"@{username}"
+                    for c in event["commits"]
+                    if (username := c["author"].get("username"))
+                )
+            )
             compare_url = event["compare"]
-            change_link = f"[{event['before'][:7]}...{event['after'][:7]}]({compare_url})"
-    return f"{change_link}, {authors}"
+            change_link = (
+                f"[{event['before'][:7]}...{event['after'][:7]}]({compare_url})"
+            )
+    return f"{change_link}, {authors}".removesuffix(", ")
 
 
 def patch(contents: str, ref: str) -> str:
@@ -42,7 +50,7 @@ def patch(contents: str, ref: str) -> str:
         """,
         add_ref,
         unreleased,
-        flags=re.VERBOSE | re.DOTALL | re.MULTILINE
+        flags=re.VERBOSE | re.DOTALL | re.MULTILINE,
     )
 
     return f"{head}{unreleased}{rest}"
@@ -57,10 +65,4 @@ if __name__ == "__main__":
         raise
 
     changelog = Path("CHANGELOG.md")
-    changelog.write_text(
-        patch(
-            changelog.read_text("utf8"),
-            ref
-        ),
-        "utf8"
-    )
+    changelog.write_text(patch(changelog.read_text("utf8"), ref), "utf8")
