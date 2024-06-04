@@ -53,6 +53,8 @@ def patch(contents: str, ref: str) -> str:
         flags=re.VERBOSE | re.DOTALL | re.MULTILINE,
     )
 
+    unreleased = unreleased.rstrip() + "\n\n"
+
     return f"{head}{unreleased}{rest}"
 
 
