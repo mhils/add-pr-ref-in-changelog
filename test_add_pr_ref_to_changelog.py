@@ -10,7 +10,7 @@ testdata = Path(__file__).parent / "testdata"
 
 @pytest.mark.parametrize(
     "filename",
-    ["CHANGELOG.md", "CHANGELOG-dashes.md"],
+    ["CHANGELOG.md", "CHANGELOG-dashes.md", "CHANGELOG-empty-unreleased-section.md"],
 )
 def test_patch(filename):
     contents = (testdata / filename).read_text()
