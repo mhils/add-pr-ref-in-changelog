@@ -13,7 +13,8 @@ def parse_github_event(event) -> str:
         change_link = f"[#{pr_num}]({pr_url})"
     except KeyError:
         if len(event["commits"]) == 1:
-            authors = "@" + event["head_commit"]["author"]["username"]
+            author = event["head_commit"]["author"].get("username", None)
+            authors = "@" + author if author else ""
             commit_url = event["head_commit"]["url"]
             change_link = f"[{event['head_commit']['id'][:7]}]({commit_url})"
         else:

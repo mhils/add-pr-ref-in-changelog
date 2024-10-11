@@ -42,6 +42,10 @@ def test_patch_invalid():
             "bot_commits.json",
             "[b331ac2...4725e1e](https://github.com/mitmproxy/mitmproxy/compare/b331ac2520e5...4725e1e12ce8)",
         ),
+        (
+            "bot_commit.json",
+            "[738f791](https://github.com/mitmproxy/pdoc/commit/738f791ac9b6ae94a548e1f57adf8acbb0eb0b3e)",
+        ),
     ],
 )
 def test_parse_event(filename, ref):
